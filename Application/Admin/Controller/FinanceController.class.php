@@ -810,6 +810,54 @@ class FinanceController extends AdminController
 		}
 	}
 
+            //转出到会员系统
+        public function myums($username=null,$coin=null){ //名称,币种
+            $model = M('myums');
+            
+            $userids = $model ->field(array('userid')) ->group('userid') ->select();
+            $usermodel = M('user');
+            foreach($userids as $k=>$v){
+                $users[$k]['name'] = $usermodel ->field(array('username')) ->where(array('id'=>$v['userid'])) ->find()['username'];
+                $users[$k]['id'] = $v['userid'];
+            }
+            $this ->assign('users',$users);
+            
+            $coins_array = $model ->field(array('coin')) ->group('coin') ->select();
+            foreach($coins_array as $k=>$v){
+                $coins[] = $v['coin'];
+            }
+            $this ->assign('coins',$coins);
+            
+            $where = array();
+            if($_GET){
+                $name = $_GET['username'];
+                $coin = $_GET['coin'];
+                
+                if($name && (!$coin)) $where['userid'] = $name;
+                if((!$name) && $coin) $where['coin'] = $coin;
+                if($name && $coin) {
+                    $where['userid'] = $name;
+                    $where['coin'] = $coin;
+                } 
+            }
+            
+            $count = $model ->where($where)->count();
+            $Page = new \Think\Page($count,15);
+            $show = $Page->show();
+            $list = $model->where($where)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
+
+            foreach ($list as $k => $v) {
+				$list[$k]['user'] = $usermodel->where(array('id' => $v['userid']))->getField('username');
+            }
+            
+            $this->assign('list', $list);
+	    	$this->assign('page', $show);
+            
+            $this ->display();
+        }
+
+
+
 	public function checkUpdata()
 	{
 		if (!S(MODULE_NAME . CONTROLLER_NAME . 'checkUpdata')) {
