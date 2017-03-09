@@ -288,6 +288,9 @@ return array(
     'finance.mycaozuo' => '操作',
     'finance.mycaozuozhi' => '修改安置人',
     'finance.zhuanchudaohuiyuanxitong' => '转出到会员系统',
+    'finance.huiyuanming' => '用户名',
+    'finance.umsname' => '会员名',
+    'finance.qingtianxinizaihuiyuanxitongzhongdeyonghuming' =>'请填写您在会员系统中的会员名',
     
     // game
     'game.wenxintishi' => '温馨提示',

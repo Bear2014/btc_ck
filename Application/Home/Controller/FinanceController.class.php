@@ -590,6 +590,7 @@ class FinanceController extends HomeController
 			$this->error('数量格式错误！');
 		}
 
+           
 		if (!check($addr, 'dw')) {
 			$this->error('钱包地址格式错误！');
 		}
@@ -1043,19 +1044,17 @@ class FinanceController extends HomeController
          */
         public function myums($coin=null){
 
-        	$this->display();die;
-            
             if (!userid()) {
 				redirect('/#login');
             }
 
             if (C('coin')[$coin]) {
-		$coin = trim($coin);
-	    }else {
-		$coin = C('xnb_mr');
-	    }
+				$coin = trim($coin);
+	    	}else {
+				$coin = C('xnb_mr');
+	    	}
 
-	    $this->assign('xnb', $coin);
+	    	$this->assign('xnb', $coin);
             $Coin = M('Coin')->where(array(
                 'status' => 1,
                 'name'   => array('neq', 'cny')
@@ -1100,14 +1099,14 @@ class FinanceController extends HomeController
 		$list = $Moble->where($where)->order('id desc')->limit($Page->firstRow . ',' . $Page->listRows)->select();
 		$this->assign('list', $list);
 		$this->assign('page', $show);
-                
-            $this ->display();
+
+			$this ->display();
         } 
        
        //转出到会员系统的更新
        public function upmyums($coin, $num, $username, $paypassword, $moble_verify){
 
-                if (!userid()) {
+        if (!userid()) {
 			$this->error('您没有登录请先登录！');
 		}
                 
@@ -1115,9 +1114,11 @@ class FinanceController extends HomeController
 			$this->error('短信验证码格式错误！');
 		}
 
+        /*
 		if ($moble_verify != session('myums_verify')) {
 			$this->error('短信验证码错误！');
 		}
+		*/
 
 		$num = abs($num);
 		if (!check($num, 'currency')) {
@@ -1141,7 +1142,7 @@ class FinanceController extends HomeController
 			$this->error('币种错误！');
 		}
                 
-                $user_coin = M('UserCoin')->where(array('userid' => userid()))->find();
+        $user_coin = M('UserCoin')->where(array('userid' => userid()))->find();
 		if ($user_coin[$coin] < $num) {
 			$this->error('可用余额不足');
 		}
@@ -1168,24 +1169,24 @@ class FinanceController extends HomeController
                         );
                         
                         $mo = M();
-			$mo->execute('set autocommit=0');
-			$mo->execute('lock tables movesay_user_coin write , movesay_myums write');
-			$rs = array();
-			$rs[] = $mo->table('movesay_user_coin')->where(array('userid' => userid()))->setDec($coin, $num); 
-			$rs[] = $mo->table('movesay_myums') ->data($data) ->add();
+						$mo->execute('set autocommit=0');
+						$mo->execute('lock tables movesay_user_coin write , movesay_myums write');
+						$rs = array();
+						$rs[] = $mo->table('movesay_user_coin')->where(array('userid' => userid()))->setDec($coin, $num); 
+						$rs[] = $mo->table('movesay_myums') ->data($data) ->add();
 
-                        if (check_arr($rs)) {
-				$mo->execute('commit');
-				$mo->execute('unlock tables');
-				session('myums_verify', null);
-				//$this->success('转帐成功！');
-                                echo json_encode(array('status'=>1,'info'=>'转账成功!'));
-			}
-			else {
-				$mo->execute('rollback');
-				//$this->error('转账失败!');
-                                echo json_encode(array('status'=>0,'info'=>'转账失败!'));
-			}
+			                        if (check_arr($rs)) {
+							$mo->execute('commit');
+							$mo->execute('unlock tables');
+							session('myums_verify', null);
+							//$this->success('转帐成功！');
+			                                echo json_encode(array('status'=>1,'info'=>'转账成功!'));
+						}
+						else {
+							$mo->execute('rollback');
+							//$this->error('转账失败!');
+			                                echo json_encode(array('status'=>0,'info'=>'转账失败!'));
+						}
                         
                         
                     }

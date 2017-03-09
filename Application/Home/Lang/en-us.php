@@ -288,6 +288,9 @@ return array(
     'finance.mycaozuo' => 'Operation',
     'finance.mycaozuozhi' => 'Change RelationShip',
     'finance.zhuanchudaohuiyuanxitong' => 'Coin withdraw to UMS',
+    'finance.huiyuanming' => 'username',
+    'finance.umsname' => 'username in UMS',
+    'finance.qingtianxinizaihuiyuanxitongzhongdeyonghuming' =>'please enter your UMS username',
     
     // game
     'game.wenxintishi' => 'notice',
