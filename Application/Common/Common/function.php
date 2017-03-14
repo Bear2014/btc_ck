@@ -1886,4 +1886,23 @@ function get_lang_text($zh_ch, $en_us)
     return '';
 }
 
+
+	//curl post
+function curl_post($url,$fields){
+		//open connection  
+		$ch = curl_init() ;
+		//set the url, number of POST vars, POST data  
+		curl_setopt($ch, CURLOPT_URL,$url) ;  
+		curl_setopt($ch, CURLOPT_POST,count($fields)) ; // 启用时会发送一个常规的POST请求，类型为：application/x-www-form-urlencoded，就像表单提交的一样。  
+		curl_setopt($ch, CURLOPT_POSTFIELDS,$fields); // 在HTTP中的“POST”操作。如果要传送一个文件，需要一个@开头的文件名  
+		
+		ob_start();
+		curl_exec($ch);
+		$result = ob_get_contents();
+		ob_end_clean();
+		//close connection
+		curl_close($ch) ;
+		return $result;
+	}
+
 ?>

@@ -1119,6 +1119,7 @@ class FinanceController extends HomeController
 			$this->error('短信验证码错误！');
 		}
 		*/
+	
 
 		$num = abs($num);
 		if (!check($num, 'currency')) {
@@ -1788,6 +1789,30 @@ class FinanceController extends HomeController
 			}
 		}
 	}
+
+   
+    //curl post test
+    public function test(){
+ 
+        $url = 'http://www.wxcoin.com/Apiwxcoin/Exchange/exchange_wxcoin';
+        $data = array(
+					'name_nums'=>'15989438320',//会员系统接收账号
+					'num'	   =>'5.21',//操作数额
+					'coin'	   =>'wxcoin',//操作币种
+					'send_name'=>'15989438320',//平台发送者账号
+					'orderid'  =>'ex123456',//订单ID
+					'app_key'  =>'c162adc2c6b4315c8378056ee1919340'//APP_key
+				);
+
+        $res = curl_post($url,$data);
+        echo $res;
+    }
+
+
+
+
+
+
 }
 
 ?>
