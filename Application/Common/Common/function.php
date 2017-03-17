@@ -1905,4 +1905,21 @@ function curl_post($url,$fields){
 		return $result;
 	}
 
+
+function get_order_id(){
+
+     	$strs = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Z','Y','Z');
+        for($i=0;$i<5;$i++){
+         	$k = rand(0,25);
+         	$order_str .= $strs[$k];
+        }
+
+        $order_timestamp = time();
+        $order_num = rand(0,99999);
+
+        $order_id = $order_str.$order_timestamp.$order_num;
+
+        return $order_id;
+}
+
 ?>
